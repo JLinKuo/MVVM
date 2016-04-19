@@ -1,0 +1,121 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+    dataBinding {
+        enabled = true
+    }
+    defaultConfig {
+        applicationId "com.heaven.common"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        // dex突破65535的限制
+//        multiDexEnabled true
+        /*
+          manifestPlaceholders
+          manifest中使用占位符，如：<... android:name="${YOUR_APP_KEY}" >
+          以[key-value]形式替换：[YOUR_APP_KEY:"value"]
+        */
+//        manifestPlaceholders = [YOUR_APP_KEY: "友盟后台的appkey"]
+        // AndroidManifest.xml 里面UMENG_CHANNEL的value为 ${UMENG_CHANNEL_VALUE}
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "channel_name"]
+    }
+
+    //Android变换成eclipse结构
+    sourceSets {
+//        main {
+//            manifest.srcFile 'AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            aidl.srcDirs = ['src']
+//            renderscript.srcDirs = ['src']
+//            res.srcDirs = ['res']
+//            assets.srcDirs = ['assets']
+//        }
+        //测试所在的路径，这里假设是tests文件夹，没有可以不写这一行
+//        instrumentTest.setRoot('tests')
+    }
+
+    //这个是解决lint报错的代码
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        disable 'MissingTranslation'
+    }
+
+    signingConfigs {
+        release {
+//            storeFile file('heaven_keystore.jks')
+//            storePassword "heaven870911"
+//            keyAlias "heaven"
+//            keyPassword "heaven870911"
+        }
+        debug {
+            storeFile file('debug.keystore')
+        }
+    }
+
+    buildTypes {
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            applicationIdSuffix ".release"
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            proguardFiles 'proguard.cfg'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    //多渠道Flavors打包
+    productFlavors {
+        GooglePlay {}
+        xiaomi {}
+        umeng {}
+
+        productFlavors.all {
+            flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+    }
+
+    applicationVariants.all { variant ->
+
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace(".apk", "-${defaultConfig.versionName + "." + defaultConfig.versionCode}.apk")
+                output.outputFile = new File(outputFile.parent + "/build/apk/", fileName)
+            }
+        }
+    }
+    dexOptions {
+        preDexLibraries = false
+        javaMaxHeapSize "4g"
+    }
+}
+
+repositories { flatDir { dirs 'libs' } }
+
+dependencies {
+    compile(project(':FragmentCore')) {
+        transitive = false;
+    }
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //    compile(project(':volley_1.0.11')) {
+    //        transitive = false;
+    //    }
+    //    compile 'com.google.code.gson:gson:2.6.1'
+    //    compile 'com.android.volley:volley:1.0.0'
+    compile files('libs/volley.jar')
+}

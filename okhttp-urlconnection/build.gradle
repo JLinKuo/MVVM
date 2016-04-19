@@ -1,0 +1,8 @@
+apply plugin: 'java'
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+}

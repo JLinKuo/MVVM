@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+task clearJar(type: Delete) {
+    delete 'build/outputs/vollely_1.0.11.jar'
+}
+
+task makeJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('build/outputs/')
+    include('classes.jar')
+    rename ('classes.jar', 'vollely_1.0.11.jar')
+}
+
+dependencies {
+//    compile 'com.squareup.okio:okio:1.6.0'
+//    compile 'com.squareup.okhttp:okhttp:2.7.5'
+//    compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
+}

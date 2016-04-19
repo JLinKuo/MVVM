@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\zoom_out.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\zoom_out.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_left.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_left.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\push_no_ani.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\push_no_ani.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_right.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_right.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_left.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_left.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\zoom_in.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\zoom_in.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\alpha_out.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\alpha_out.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\alpha_in.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\alpha_in.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\push_out_down.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\push_out_down.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_right.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_right.xml"
+    },
+    {
+        "merged": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\push_in_down.xml",
+        "source": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\anim\\push_in_down.xml"
+    }
+]

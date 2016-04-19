@@ -1,0 +1,47 @@
+[
+    {
+        "outputFile": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\res\\merged\\androidTest\\debug\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 41,
+                    "endOffset": 92
+                },
+                "from": {
+                    "file": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 41,
+                        "endOffset": 92
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 97,
+                    "endLine": 5,
+                    "endColumn": 12,
+                    "endOffset": 177
+                },
+                "from": {
+                    "file": "D:\\software\\android_studio_space\\fragment_heaven\\FragmentCore\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 97,
+                        "endLine": 5,
+                        "endColumn": 12,
+                        "endOffset": 177
+                    }
+                }
+            }
+        ]
+    }
+]
