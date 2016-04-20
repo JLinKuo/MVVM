@@ -24,13 +24,7 @@ import base.core.heaven.baseui.BaseFragment;
 import base.core.heaven.param.PageParam;
 
 public class Login extends BaseFragment implements ILoginVm {
-    //    private ContentMainBinding mMainBinding;
-    private MainBinding binding = null;
     LoginVm loginVm = null;
-    public Login() {
-        // Required empty public constructor
-    }
-
     @Override
     protected void initTitle() {
 
@@ -44,9 +38,7 @@ public class Login extends BaseFragment implements ILoginVm {
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
         View rootView = inflater.inflate(R.layout.main, null);
-        binding = MainBinding.bind(rootView);
         loginVm = new LoginVm(this);
-        binding.setLoginVm(loginVm);
         initView(rootView);
         return rootView;
     }
