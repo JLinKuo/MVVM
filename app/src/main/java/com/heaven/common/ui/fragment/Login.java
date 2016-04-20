@@ -63,7 +63,23 @@ public class Login extends BaseFragment implements ILoginVm {
         login_state = (ImageView) rootView.findViewById(R.id.login_state);
         timeCount = new TimeCount(mContext, get_check_num);
 
+//		xa_neumk/1qaz!QAZ
 
+//		xa_suni /.,mnbv1
+//		lgh_810/1qaz!QAZ
+//		CDJF0010  /1qaz!QAZ
+//		xa_neumk   密码 1qaz!QAZ
+//		cdjf0010  1qaz!CDJF
+//		zx810 1qaz!QAZ
+//		21 sf_cd_cs 1qaz!QAZ
+
+        if (NetConstant.TAG == 2) {
+            user_name.setText("CDJF0010");
+            user_password.setText("1qaz!QAZ");
+        } else {
+            user_name.setText("xa_suni");
+            user_password.setText("/.,mnbv1");
+        }
 
         login_state_bg = (AnimationDrawable) login_state.getDrawable();
 
