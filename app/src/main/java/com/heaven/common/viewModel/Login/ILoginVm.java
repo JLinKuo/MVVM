@@ -5,5 +5,5 @@ package com.heaven.common.viewModel.Login;
  */
 public interface ILoginVm {
     void resCheckCode(String checkCode);
-    void resLoginSuccess();
+    void resLoginSuccess(boolean isSuccess);
 }

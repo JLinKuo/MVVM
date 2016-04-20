@@ -142,7 +142,7 @@ public class Login extends BaseFragment implements ILoginVm {
     }
 
     @Override
-    public void resLoginSuccess() {
+    public void resLoginSuccess(boolean isSuccess) {
 
     }
 }
