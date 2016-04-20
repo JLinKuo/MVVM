@@ -1,9 +1,9 @@
-package com.heaven.common.http;
+package com.heaven.common.datamodel;
 
 /**
  * Created by neusoft on 2016/4/20.
  */
-public class BaseRequest {
+public class BaseReqDataModel {
     public String type = null;
     public String ip = null;
     public String action = null;

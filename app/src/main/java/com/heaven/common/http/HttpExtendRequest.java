@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.JsonDeserializer;
+import com.heaven.common.datamodel.BaseReqDataModel;
 import com.heaven.common.util.LogUtil;
 import com.heaven.common.util.Util;
 
@@ -25,7 +26,7 @@ public class HttpExtendRequest<T> extends Request<T>{
     //数据交互格式(json或xml)
     private int requestDataType = 0;
     //请求体
-    private BaseRequest requestBody;
+    private BaseReqDataModel requestBody;
     private String mRequestBody = null;
     //请求action
     private String reqAction = "";

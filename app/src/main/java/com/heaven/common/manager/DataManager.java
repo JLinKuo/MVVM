@@ -14,8 +14,8 @@ public class DataManager {
 
     }
 
-    public static DataManager getInstance() {
-        if (instance != null) {
+    protected static DataManager getInstance() {
+        if (instance == null) {
             instance = new DataManager();
         }
         return instance;

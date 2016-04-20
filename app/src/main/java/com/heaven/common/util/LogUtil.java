@@ -12,7 +12,8 @@ import android.os.Message;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import base.core.heaven.MainApp;
+import com.heaven.common.MainApp;
+
 import base.core.heaven.param.AppInfo;
 
 public class LogUtil {

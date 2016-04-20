@@ -6,6 +6,7 @@ package com.heaven.common.config;
 public class UserInfo {
     public String userName = null;
     public String password = null;
+    public String checkCode = null;
     public String dateType = null;
     public String sessionID = null;
 }

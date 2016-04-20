@@ -24,12 +24,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_gravity="right|center_vertical"
                 android:text="@string/user_name" />
 
             <EditText
                 android:id="@+id/user_name"
                 android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
                 android:layout_marginLeft="5dp"
                 android:layout_span="3" />
         </TableRow>
@@ -41,6 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:layout_gravity="right|center_vertical"
                 android:text="@string/user_password" />
 
@@ -48,6 +51,7 @@
                 android:id="@+id/user_password"
                 android:layout_marginLeft="5dp"
                 android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
                 android:layout_span="2"
                 android:inputType="textPassword" />
         </TableRow>
@@ -60,11 +64,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
+                android:textColor="@color/black"
                 android:text="@string/check_num" />
 
             <EditText
                 android:id="@+id/check_num"
                 android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
                 android:layout_marginLeft="5dp" />
 
             <TextView

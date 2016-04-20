@@ -13,8 +13,14 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.heaven.common.BuildConfig;
 import com.heaven.common.R;
+import com.heaven.common.datamodel.BaseReqDataModel;
 import com.heaven.common.http.BitmapLruCache;
+import com.heaven.common.http.HttpExtendRequest;
+import com.heaven.common.http.HttpTask;
+import com.heaven.common.http.INetListener;
+import com.heaven.common.http.NetConstant;
 import com.heaven.common.http.OkHttpSSLStack;
+import com.heaven.common.util.LogUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +51,7 @@ public class HttpManager {
     private ImageLoader mImageLoader;
     private DiskBasedCache mDiskCache;
 
-    public static HttpManager getsInstance(Context context) {
+    public static HttpManager getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new HttpManager(context);
         }
@@ -117,6 +123,25 @@ public class HttpManager {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, tmf.getTrustManagers(), new SecureRandom());
         return sslContext.getSocketFactory();
+    }
+
+    // 把请求加入到请求队列中
+    public <T> void addRequestQueue(BaseReqDataModel request, Class<T> clazz, INetListener listener) {
+        HttpTask<T> task = OrganizeRequest(request,clazz,listener);
+        HttpExtendRequest<T> commonRequest = new HttpExtendRequest<T>(task);
+        if (request != null) {
+            commonRequest.setTag(request.action);
+        }
+        mRequestQueue.add(commonRequest);
+    }
+
+    // 组装请求信息
+    private <T> HttpTask<T> OrganizeRequest(BaseReqDataModel request, Class<T> clazz, INetListener listener) {
+        HttpTask<T> task = new HttpTask<T>(request);
+        task.requestUrl = NetConstant.WEB_HOST + request.action;
+        task.listener = listener;
+        task.clazz = clazz;
+        return task;
     }
 
     public void addRequest(Request request, Object tag) {

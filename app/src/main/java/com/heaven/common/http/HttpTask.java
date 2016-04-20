@@ -5,10 +5,11 @@ import java.util.HashMap;
 
 import com.android.volley.Request.Method;
 import com.google.gson.JsonDeserializer;
+import com.heaven.common.MainApp;
 import com.heaven.common.config.UserInfo;
-import com.heaven.common.manager.DataManager;
+import com.heaven.common.datamodel.BaseReqDataModel;
+import com.heaven.common.manager.Engine;
 
-import base.core.heaven.MainApp;
 import base.core.heaven.param.AppInfo;
 
 public class HttpTask<T> {
@@ -21,7 +22,7 @@ public class HttpTask<T> {
     //请求action
     public String reqAction = null;
     //请求体(xml格式的必须带simple-xml的注解)
-    public BaseRequest requestBody = null;
+    public BaseReqDataModel requestBody = null;
     //是否需要特殊反序列化
     public boolean needDeserializer = false;
     //特殊反序列化对象
@@ -31,8 +32,8 @@ public class HttpTask<T> {
     //网络请求监听
     public INetListener listener = null;
     //请求体
-    public BaseRequest reqBody = null;
-    public HttpTask(BaseRequest reqBody) {
+    public BaseReqDataModel reqBody = null;
+    public HttpTask(BaseReqDataModel reqBody) {
         fillIdentifyData(reqBody);
         this.reqAction = reqBody.action;
         this.requestBody = reqBody;
@@ -41,9 +42,9 @@ public class HttpTask<T> {
     }
     
     //填充请求验证信息
-    private void fillIdentifyData(BaseRequest reqBody) {
+    private void fillIdentifyData(BaseReqDataModel reqBody) {
         AppInfo appConfig = MainApp.getAppConfig();
-        UserInfo userConfig = DataManager.getInstance().getmUserInfo();
+        UserInfo userConfig = Engine.getDataManager().getmUserInfo();
         reqBody.type = AppInfo.DEVICE_TYPE;
         reqBody.ip = appConfig.APP_IP;
         if (userConfig != null) {

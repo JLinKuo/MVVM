@@ -16,7 +16,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PageParam param = producePageParam(Login.class);
-        param.needAddToBackStack = true;
         SwitchManager.getInstance().showPage(this, param);
     }
 
