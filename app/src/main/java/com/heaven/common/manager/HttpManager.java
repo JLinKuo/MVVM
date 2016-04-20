@@ -63,16 +63,29 @@ public class HttpManager {
 
     private RequestQueue newRequestQueue(Context context) {
         RequestQueue requestQueue;
-        try {
+//        try {
             String[] hosts = {"kyfw.12306.cn"};
             int[] certRes = {R.raw.kyfw};
             String[] certPass = {"asdfqaz"};
-            mSSLMap = new Hashtable<>(hosts.length);
+            mSSLMap = new Hashtable<String, SSLSocketFactory>(hosts.length);
 
             for (int i = 0; i < certRes.length; i++) {
                 int res = certRes[i];
                 String password = certPass[i];
-                SSLSocketFactory sslSocketFactory = createSSLSocketFactory(context, res, password);
+                SSLSocketFactory sslSocketFactory = null;
+                try {
+                    sslSocketFactory = createSSLSocketFactory(context, res, password);
+                } catch (CertificateException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (KeyStoreException e) {
+                    e.printStackTrace();
+                } catch (KeyManagementException e) {
+                    e.printStackTrace();
+                }
                 mSSLMap.put(hosts[i], sslSocketFactory);
             }
 
@@ -80,13 +93,13 @@ public class HttpManager {
 
             requestQueue = Volley.newRequestQueue(context, stack);
             requestQueue.start();
-        } catch (KeyStoreException
-                | CertificateException
-                | NoSuchAlgorithmException
-                | KeyManagementException
-                | IOException e) {
-            throw new RuntimeException(e);
-        }
+//        } catch (KeyStoreException
+//                | CertificateException
+//                | NoSuchAlgorithmException
+//                | KeyManagementException
+//                | IOException e) {
+//            throw new RuntimeException(e);
+//        }
         return requestQueue;
     }
 
