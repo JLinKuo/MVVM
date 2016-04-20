@@ -85,7 +85,7 @@ public class Login extends BaseFragment implements ILoginVm {
         } else if (id == R.id.get_check_num) {
             timeCount.start();
             get_check_num.setEnabled(false);
-            getCheckNum();
+            reqCheckNum();
         }
     }
 
@@ -104,7 +104,7 @@ public class Login extends BaseFragment implements ILoginVm {
     }
 
     // 请求验证码
-    private void getCheckNum() {
+    private void reqCheckNum() {
         String name = user_name.getText().toString();
         String password = user_password.getText().toString();
         mLoginVm.getCheckNum(name, password);
