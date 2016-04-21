@@ -16,9 +16,7 @@ import com.heaven.common.util.TimeCount;
 import com.heaven.common.viewModel.Login.ILoginVm;
 import com.heaven.common.viewModel.Login.LoginVm;
 
-import base.core.heaven.baseui.BaseFragment;
-
-public class Login extends BaseFragment implements ILoginVm {
+public class Login extends BaseSubFragment implements ILoginVm {
 
     private LoginVm mLoginVm = null;
     private String mCheckCode = null;
