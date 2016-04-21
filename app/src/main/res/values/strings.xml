@@ -10,4 +10,6 @@
     <string name="requrie_check_num">获取验证码</string>
     <string name="check_num">验证码:</string>
     <string name="login">登录</string>
+    <string name="dialog_ok">确定</string>
+    <string name="note_popupwindow_title">提示信息!</string>
 </resources>
