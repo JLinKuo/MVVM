@@ -12,6 +12,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.heaven.common.BuildConfig;
+import com.heaven.common.MainApp;
 import com.heaven.common.R;
 import com.heaven.common.datamodel.BaseReqDataModel;
 import com.heaven.common.http.BitmapLruCache;
@@ -51,14 +52,15 @@ public class HttpManager {
     private ImageLoader mImageLoader;
     private DiskBasedCache mDiskCache;
 
-    public static HttpManager getInstance(Context context) {
+    public static HttpManager getInstance() {
         if (sInstance == null) {
-            sInstance = new HttpManager(context);
+            sInstance = new HttpManager();
         }
         return sInstance;
     }
 
-    private HttpManager(Context context) {
+    private HttpManager() {
+        Context context = MainApp.getContext();
         int MEM_CACHE_SIZE = 1024 * 1024
                 * ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass() / 3;
         mLruCache = new BitmapLruCache(MEM_CACHE_SIZE);
