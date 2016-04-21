@@ -10,18 +10,20 @@ import com.heaven.common.datamodel.login.ResIdentifyID;
 import com.heaven.common.http.INetListener;
 import com.heaven.common.http.NetConstant;
 import com.heaven.common.manager.Engine;
-
+import com.heaven.common.ui.note.NotePopWindow;
+import com.heaven.common.viewModel.BaseViewModel;
 
 /**
- * Created by heaven on 2016/4/17.
+ *作用描述 登陆和验证码请求处理
+ *author liuhongtao
+ *created at 2016/4/21 10:58
  */
-public class LoginVm implements INetListener {
+public class LoginVm extends BaseViewModel {
     private ILoginVm mCallBack = null;
-    private Context mContext = null;
 
     public LoginVm(ILoginVm callBack,Context context) {
+        super(context);
         this.mCallBack = callBack;
-        this.mContext = context;
     }
 
     // 请求验证码
@@ -54,19 +56,18 @@ public class LoginVm implements INetListener {
     }
 
     @Override
-    public void onResponseByID(String requestID, Object response) {
-        if (response != null) {
-            mCallBack.resCheckCode(((ResIdentifyID)response).checkCode);
-        }
+    protected void onSuccessResponse(String requestID, BaseResDataModel response) {
+            if (response != null) {
+                if (NetConstant.IDENTIFY_ACTION.equals(requestID)) {
+                    mCallBack.resCheckCode(((ResIdentifyID)response).checkCode);
+                } else if(NetConstant.LOGIN_ACTION.equals(requestID)) {
+
+                }
+            }
     }
 
     @Override
-    public void onErrorResponse(String s, VolleyError volleyError) {
-
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError volleyError) {
-
+    protected void onErrorResponse(int errorType, String errorMessage) {
+        NotePopWindow.getInstance(mContext).showPopupWindow(errorMessage);
     }
 }

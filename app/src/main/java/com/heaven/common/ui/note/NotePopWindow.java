@@ -39,9 +39,17 @@ public class NotePopWindow extends PopupWindow implements OnClickListener{
     private TextView pop_content = null;
     private Button confirm_btn = null;
     private OnClickListener listener = null;
-    public NotePopWindow(Context context) {
+    private static NotePopWindow instance = null;
+    private NotePopWindow(Context context) {
         initAttr(context);
         iniView(context);
+    }
+
+    public static NotePopWindow getInstance(Context context) {
+        if (instance == null) {
+            instance = new NotePopWindow(context);
+        }
+        return instance;
     }
     public NotePopWindow(Context context, OnClickListener listener) {
         initAttr(context);
@@ -90,9 +98,9 @@ public class NotePopWindow extends PopupWindow implements OnClickListener{
             // 以下拉方式显示popupwindow
             pop_content.setText(content);
             this.showAtLocation(contentView,Gravity.CENTER, 0, 0);
-        } else {  
-            this.dismiss();  
-        }  
+        } else {
+            pop_content.setText(content);
+        }
     }  
 }
  
