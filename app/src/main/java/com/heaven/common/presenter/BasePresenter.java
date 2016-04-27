@@ -2,6 +2,7 @@ package com.heaven.common.presenter;
 
 import com.android.volley.VolleyError;
 import com.heaven.common.datamodel.BaseResDataModel;
+import com.heaven.common.http.ErrorMessage;
 import com.heaven.common.http.INetListener;
 import com.heaven.common.http.VelloyHttpError;
 
@@ -33,7 +34,7 @@ public abstract class BasePresenter implements INetListener {
                         errorType = VelloyHttpError.OTHER_ERROR;
                     }
                     errorMessage = resData.detail;
-                    ServerInternalError error = new ServerInternalError();
+                    ErrorMessage error = new ErrorMessage();
                     error.mErrorType = errorType;
                     error.mErrorDetail = errorMessage;
                     onErrorResponse(error);
