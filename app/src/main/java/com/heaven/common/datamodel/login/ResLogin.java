@@ -11,6 +11,8 @@ package com.heaven.common.datamodel.login;
 
 import com.heaven.common.datamodel.BaseResDataModel;
 
+import base.core.heaven.baseui.BaseFragment;
+
 /**
  * ClassName:ResLogin <br/>
  * Function: TODO ADD FUNCTION. <br/> 
