@@ -3,7 +3,9 @@ package com.heaven.common.presenter.login;
 import com.heaven.common.config.UserInfo;
 import com.heaven.common.datamodel.BaseResDataModel;
 import com.heaven.common.datamodel.login.ReqIdentifyID;
+import com.heaven.common.datamodel.login.ReqLogin;
 import com.heaven.common.datamodel.login.ResIdentifyID;
+import com.heaven.common.datamodel.login.ResLogin;
 import com.heaven.common.http.NetConstant;
 import com.heaven.common.manager.Engine;
 import com.heaven.common.presenter.BasePresenter;
@@ -25,9 +27,11 @@ public class LoginPt extends BasePresenter implements ILoginPt.Presenter{
     protected void onSuccessResponse(String requestID, BaseResDataModel response) {
             if (response != null) {
                 if (NetConstant.IDENTIFY_ACTION.equals(requestID)) {
+                    Engine.getDataManager().memoryLoginSession(response.sessionID);
                     mViewCallBack.resCheckCode(((ResIdentifyID)response).checkCode);
                 } else if(NetConstant.LOGIN_ACTION.equals(requestID)) {
-
+                    Engine.getDataManager().memoryLoginRes((ResLogin)response);
+                    mViewCallBack.resLoginSuccess(true);
                 }
             }
     }
@@ -46,23 +50,17 @@ public class LoginPt extends BasePresenter implements ILoginPt.Presenter{
         UserInfo userInfo = new UserInfo();
         userInfo.userName = userName;
         userInfo.password = password;
-        Engine.getDataManager().setmUserInfo(userInfo);
         Engine.getHttpManager().addRequestQueue(req, ResIdentifyID.class,this);
     }
 
     @Override
     public void reqLogin(String userName, String password, String checkCode) {
-//        ReqLogin login = new ReqLogin();
-//        login.action = NetConstant.LOGIN_ACTION;
-//        String name = user_name.getText().toString();
-//        String password = user_password.getText().toString();
-//        login.username = name;
-//        login.password = password;
-//        login.checkCode = check_num.getText().toString();
-//        if ("".equals(login.checkCode)) {
-//            MainApp.ShowToast(this.getStr(R.string.please_fill_check_code));
-//            changeLoginState(false);
-//            return;
-//        }
+        ReqLogin login = new ReqLogin();
+        login.action = NetConstant.LOGIN_ACTION;
+        login.username = userName;
+        login.password = password;
+        login.checkCode = checkCode;
+        Engine.getDataManager().memoryLoginData(userName, password);
+        Engine.getHttpManager().addRequestQueue(login, ResLogin.class,this);
     }
 }

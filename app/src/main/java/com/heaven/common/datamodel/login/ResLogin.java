@@ -9,7 +9,7 @@
 package com.heaven.common.datamodel.login;
 
 
-import com.heaven.common.datamodel.BaseReqDataModel;
+import com.heaven.common.datamodel.BaseResDataModel;
 
 /**
  * ClassName:ResLogin <br/>
@@ -20,7 +20,7 @@ import com.heaven.common.datamodel.BaseReqDataModel;
  * @version
  * @since JDK 1.6
  */
-public class ResLogin extends BaseReqDataModel {
+public class ResLogin extends BaseResDataModel {
     public String operatorId;
     public String operatorId_bs;
     public String operatorId_cb;

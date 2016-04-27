@@ -1,6 +1,7 @@
 package com.heaven.common.manager;
 
 import com.heaven.common.config.UserInfo;
+import com.heaven.common.datamodel.login.ResLogin;
 
 /**
  * Created by neusoft on 2016/4/20.
@@ -11,7 +12,7 @@ public class DataManager {
     private static DataManager instance = null;
 
     private DataManager() {
-
+        mUserInfo = new UserInfo();
     }
 
     protected static DataManager getInstance() {
@@ -21,11 +22,20 @@ public class DataManager {
         return instance;
     }
 
-    public UserInfo getmUserInfo() {
-        return mUserInfo;
+    public void memoryLoginData(String userName, String password) {
+        mUserInfo.userName = userName;
+        mUserInfo.password = password;
     }
 
-    public void setmUserInfo(UserInfo mUserInfo) {
-        this.mUserInfo = mUserInfo;
+    public void memoryLoginSession(String session) {
+        mUserInfo.sessionID = session;
+    }
+
+    public void memoryLoginRes(ResLogin loginData) {
+        mUserInfo.loginData = loginData;
+    }
+
+    public UserInfo getmUserInfo() {
+        return mUserInfo;
     }
 }
