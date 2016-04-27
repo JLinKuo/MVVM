@@ -11,7 +11,7 @@ public class Engine {
         return DataManager.getInstance();
     }
 
-    public static HttpManager getHttpManager(Context context) {
-        return HttpManager.getInstance(context);
+    public static HttpManager getHttpManager() {
+        return HttpManager.getInstance();
     }
 }
