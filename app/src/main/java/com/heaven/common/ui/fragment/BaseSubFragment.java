@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.heaven.common.R;
+import com.heaven.common.http.ErrorMessage;
+import com.heaven.common.http.VelloyHttpError;
 
 import base.core.heaven.baseui.BaseFragment;
 import base.core.heaven.manager.SwitchManager;
@@ -19,44 +21,38 @@ import base.core.heaven.param.PageParam;
  * A simple {@link Fragment} subclass.
  */
 public abstract class BaseSubFragment extends BaseFragment {
-    private static final int SESSION_FAIL = 1;
-    private static final int CHECK_CODE_FAIL = 2;
-    private static final int PROTOCOL_ANALYZE_FAIL = 3;
-    private static final int OTHER_FAIL = 4;
 
     //处理网络请求相关异常
     private int mErrorType = -1;
 
-    protected void onNetErrorResponse(int errorType, String errorMessage) {
-        mErrorType = errorType;
-        NotePopWindow note = NotePopWindow.getInstance(mContext);
-        switch (errorType) {
-            case SESSION_FAIL:
-                note.setOnClickListener(errorListener);
-                errorMessage = mContext.getResources().getString(base.core.heaven.main.R.string.session_fail);
-                break;
-            case CHECK_CODE_FAIL:
-                note.setOnClickListener(errorListener);
-                errorMessage = mContext.getResources().getString(base.core.heaven.main.R.string.check_code_fail);
-                break;
-            case PROTOCOL_ANALYZE_FAIL:
-                note.setOnClickListener(null);
-                errorMessage =  mContext.getResources().getString(base.core.heaven.main.R.string.protocol_analyze_fail);
-                break;
-            case OTHER_FAIL:
-                note.setOnClickListener(null);
-                break;
+    /**
+     * show the error message, if the error type is SESSION_ERROR or CHECK_CODE_ERROR
+     * will trigger the login view
+     * @param error error message
+     */
+    protected void onNetErrorResponse(ErrorMessage error) {
+        if (error != null) {
+            NotePopWindow note = NotePopWindow.getInstance(mContext);
+            mErrorType = error.mErrorType;
+            switch (error.mErrorType) {
+                case VelloyHttpError.SESSION_ERROR:
+                case VelloyHttpError.CHECK_CODE_ERROR:
+                    mErrorType = VelloyHttpError.SESSION_ERROR;
+                    note.setOnClickListener(errorListener);
+                    break;
+                default:
+                    mErrorType = -1;
+                    note.setOnClickListener(null);
+            }
+            note.showPopupWindow(error.mErrorDetail);
         }
-        note.showPopupWindow(errorMessage);
     }
 
     private View.OnClickListener errorListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             PageParam param = producePageParam(Login.class);
-            if (mErrorType == SESSION_FAIL) {
-                SwitchManager.getInstance().showPage(mActivity, param);
-            } else if (mErrorType == CHECK_CODE_FAIL) {
+            if (mErrorType == VelloyHttpError.SESSION_ERROR) {
                 SwitchManager.getInstance().showPage(mActivity, param);
             }
         }

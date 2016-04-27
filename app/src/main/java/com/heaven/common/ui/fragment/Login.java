@@ -11,14 +11,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.heaven.common.R;
+import com.heaven.common.http.ErrorMessage;
 import com.heaven.common.http.NetConstant;
+import com.heaven.common.http.VelloyHttpError;
+import com.heaven.common.presenter.login.LoginPt;
 import com.heaven.common.util.TimeCount;
-import com.heaven.common.viewModel.Login.ILoginVm;
-import com.heaven.common.viewModel.Login.LoginVm;
+import com.heaven.common.presenter.login.ILoginPt;
 
-public class Login extends BaseSubFragment implements ILoginVm {
+public class Login extends BaseSubFragment implements ILoginPt.View {
 
-    private LoginVm mLoginVm = null;
+    private ILoginPt.Presenter mPresenter = null;
     private String mCheckCode = null;
 
     private EditText user_name;
@@ -39,7 +41,7 @@ public class Login extends BaseSubFragment implements ILoginVm {
 
     @Override
     protected void initData() {
-        mLoginVm = new LoginVm(this,mContext);
+        new LoginPt(this);
     }
 
     @Override
@@ -121,7 +123,7 @@ public class Login extends BaseSubFragment implements ILoginVm {
     private void reqCheckNum() {
         String name = user_name.getText().toString();
         String password = user_password.getText().toString();
-        mLoginVm.getCheckNum(name, password);
+        mPresenter.reqCheckCode(name, password);
     }
 
 
@@ -129,7 +131,7 @@ public class Login extends BaseSubFragment implements ILoginVm {
     private void login() {
         String name = user_name.getText().toString();
         String password = user_password.getText().toString();
-        mLoginVm.login(name, password, mCheckCode);
+        mPresenter.reqLogin(name, password, mCheckCode);
     }
 
     @Override
@@ -142,5 +144,16 @@ public class Login extends BaseSubFragment implements ILoginVm {
     @Override
     public void resLoginSuccess(boolean isSuccess) {
         changeLoginState(false);
+    }
+
+    @Override
+    public void resError(Object error) {
+        ErrorMessage errorMessage = VelloyHttpError.dealWithErrorType(error, mContext);
+        onNetErrorResponse(errorMessage);
+    }
+
+    @Override
+    public void setPresenter(ILoginPt.Presenter presenter) {
+        this.mPresenter = presenter;
     }
 }
