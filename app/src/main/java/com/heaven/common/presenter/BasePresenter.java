@@ -37,7 +37,7 @@ public abstract class BasePresenter implements INetListener {
                     ErrorMessage error = new ErrorMessage();
                     error.mErrorType = errorType;
                     error.mErrorDetail = errorMessage;
-                    onErrorResponse(error);
+                    onHttpError(error);
                 }
             }
         }
@@ -50,12 +50,12 @@ public abstract class BasePresenter implements INetListener {
 
     @Override
     public void onErrorResponse(VolleyError volleyError) {
-        onErrorResponse(volleyError);
+        onHttpError(volleyError);
     }
 
     protected abstract void onSuccessResponse(String requestID, BaseResDataModel response);
 
-    protected abstract void onErrorResponse(Object error);
+    protected abstract void onHttpError(Object error);
 
 
 }
