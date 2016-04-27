@@ -15,9 +15,13 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonSyntaxException;
 import com.heaven.common.datamodel.BaseReqDataModel;
 import com.heaven.common.util.LogUtil;
 import com.heaven.common.util.Util;
@@ -108,15 +112,15 @@ public class HttpExtendRequest<T> extends Request<T>{
         /**
          * 得到返回的数据
          */
-        T result = null;
+        T result;
         InputStream input = new ByteArrayInputStream(response.data);
         Reader reader = new InputStreamReader(input);
         Util.saveData(0, response.data);
         // json格式的数据转换
         if (needDeserializer) {
-            result = DataConvert.getBeanObjByDeserializer(reader, clazz, deserializer);
+            result = getBeanObjByDeserializer(reader, clazz, deserializer);
         } else {
-            result = DataConvert.getBeanObj(reader, clazz);
+            result = getBeanObj(reader, clazz);
         }
         Entry entry = HttpHeaderParser.parseCacheHeaders(response);
 
@@ -141,5 +145,20 @@ public class HttpExtendRequest<T> extends Request<T>{
         if (mCallBack != null) {
             mCallBack.onResponseByID(reqAction, response);
         }
+    }
+
+
+    public T getBeanObj(Reader reader, Class<T> clazz) throws JsonSyntaxException {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        T t = gson.fromJson(reader, clazz);
+        return t;
+    }
+
+    public T getBeanObjByDeserializer(Reader reader, Class<T> clazz, JsonDeserializer<T> deserializer) throws JsonSyntaxException{
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(clazz, deserializer);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        T t = gson.fromJson(reader, clazz);
+        return t;
     }
 }
