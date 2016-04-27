@@ -37,7 +37,7 @@ public class LoginPt extends BasePresenter implements ILoginPt.Presenter{
     }
 
     @Override
-    protected void onErrorResponse(Object error) {
+    protected void onHttpError(Object error) {
         mViewCallBack.resError(error);
     }
 
