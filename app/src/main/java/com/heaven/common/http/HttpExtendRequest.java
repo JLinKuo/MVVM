@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -231,7 +232,7 @@ public class HttpExtendRequest<T> extends Request<T> implements Response.ErrorLi
      *
      * @param error error message
      */
-    public void handleServerError(String reqAction,Object error) {
+    public void handleServerError(String reqAction,VolleyError error) {
         ResponseData resData = new ResponseData();
         resData.isSuccess = false;
         resData.action = reqAction;
@@ -239,21 +240,19 @@ public class HttpExtendRequest<T> extends Request<T> implements Response.ErrorLi
         resData.detail = HttpErrorConst.UNKNOWN_ERROR;
         if (error != null) {
             String errorMessage = "";
+            Throwable errorException = error.getCause();
             if (error instanceof ServerError) {
-                errorMessage = handleServerInnerError((VolleyError) error);
+                errorMessage = handleServerInnerError(error);
             } else if (error instanceof TimeoutError) {
                 errorMessage = HttpErrorConst.TIMEOUTE_ERROR;
             } else if (error instanceof NetworkError) {
                 errorMessage = HttpErrorConst.NETWORKE_ERROR;
-            } else if (error instanceof NoConnectionError) {
+            } else if (errorException instanceof ConnectException) {
                 errorMessage = HttpErrorConst.NO_CONNECTION_ERROR;
             } else if (error instanceof AuthFailureError) {
                 errorMessage = HttpErrorConst.AUTHFAILURE_ERROR;
-            } else if (error instanceof VolleyError) {
-                Throwable exception = ((VolleyError) error).getCause();
-                if (exception != null && exception instanceof JsonSyntaxException) {
-                    errorMessage = HttpErrorConst.PROTOCOL_ANALYZE_ERROR;
-                }
+            } else if (errorException instanceof JsonSyntaxException) {
+                errorMessage = HttpErrorConst.PROTOCOL_ANALYZE_ERROR;
             }
             resData.detail = errorMessage;
         }
