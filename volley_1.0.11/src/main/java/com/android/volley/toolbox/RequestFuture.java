@@ -150,10 +150,5 @@ public class RequestFuture<T> implements Future<T>, Response.Listener<T>,
         mException = error;
         notifyAll();
     }
-
-    @Override
-    public void onErrorResponse(String action, VolleyError error){
-
-    }
 }
 

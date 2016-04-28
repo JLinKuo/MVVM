@@ -38,12 +38,6 @@ public class Response<T> {
      */
     public interface ErrorListener {
         /**
-         * correspond id method
-         * @param action request Action
-         * @param error provided error code and optional user-readable message.
-         */
-        public void onErrorResponse(String action, VolleyError error);
-        /**
          * Callback method that an error has been occurred with the
          * provided error code and optional user-readable message.
          */

@@ -100,10 +100,6 @@ public class ImageLoader {
                                                  final int defaultImageResId, final int errorImageResId) {
         return new ImageListener() {
             @Override
-            public void onErrorResponse(String action, VolleyError error){
-
-            }
-            @Override
             public void onErrorResponse(VolleyError error) {
                 if (errorImageResId != 0) {
                     view.setImageResource(errorImageResId);
@@ -261,11 +257,6 @@ public class ImageLoader {
                 onGetImageSuccess(cacheKey, response);
             }
         }, maxWidth, maxHeight, scaleType, Config.RGB_565, new ErrorListener() {
-            @Override
-            public void onErrorResponse(String action, VolleyError error){
-
-            }
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 onGetImageError(cacheKey, error);

@@ -133,10 +133,6 @@ public abstract class Request<T> implements Comparable<Request<T>> {
      * An opaque token tagging this request; used for bulk cancellation.
      */
     private Object mTag;
-    /**
-     * 请求动作标示
-     */
-    private String mAction = "";
 
     /**
      * Creates a new request with the given URL and error listener.  Note that
@@ -167,14 +163,16 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         mDefaultTrafficStatsTag = findDefaultTrafficStatsTag(url);
     }
 
-    public Request(int method, String action, String url, Response.ErrorListener listener) {
+    public Request(int method, String url) {
         mMethod = method;
-        mAction = action;
         mUrl = url;
-        mErrorListener = listener;
         setRetryPolicy(new DefaultRetryPolicy());
 
         mDefaultTrafficStatsTag = TextUtils.isEmpty(url) ? 0: Uri.parse(url).getHost().hashCode();
+    }
+
+    public void setmErrorListener(Response.ErrorListener listener) {
+        mErrorListener = listener;
     }
     /**
      * Return the method for this request.  Can be one of the values in {@link Method}.
