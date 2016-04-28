@@ -6,15 +6,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache.Entry;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -23,10 +28,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSyntaxException;
 import com.heaven.common.datamodel.BaseReqDataModel;
+import com.heaven.common.datamodel.BaseResDataModel;
 import com.heaven.common.util.LogUtil;
 import com.heaven.common.util.Util;
 
-public class HttpExtendRequest<T> extends Request<T>{
+public class HttpExtendRequest<T> extends Request<T> implements Response.ErrorListener{
     //数据交互格式(json或xml)
     private int requestDataType = 0;
     //请求体
@@ -35,7 +41,7 @@ public class HttpExtendRequest<T> extends Request<T>{
     //请求action
     private String reqAction = "";
     //监听后台返回的数据
-    private INetListener mCallBack;
+    private INetCallBack mCallBack;
     //是否需要特殊反序列化
     private boolean needDeserializer = false;
     //特殊反序列化对象
@@ -48,28 +54,17 @@ public class HttpExtendRequest<T> extends Request<T>{
     private static Map<String, String> mHeader = new HashMap<String, String>();
     //自定义请求头
     private HashMap<String, String> headerExtra = null;
-    /**
-     * 设置访问自己服务器时必须传递的参数，密钥,头信息等
-     */
-    static {
-        mHeader.put("APP-Key", "");//应用的key值 
-        mHeader.put("APP-Secret", "");//应用的密钥
-        mHeader.put("Charset", PROTOCOL_CHARSET);//字符编码格式
-        mHeader.put("Accept", "application/json");//能够接受的数据格式
-        mHeader.put("Accept-Language", "zh-cn");//接受的语言
-        mHeader.put("Content-Type","application/json");//内容数据格式
-        mHeader.put("Accept-Encoding", "gzip,deflate");//gzip格式压缩
-    }
-    
-    private HttpExtendRequest(int requestType, String reqAction, String url, INetListener listener) {
-        super(requestType,reqAction, url, listener);
+
+    private HttpExtendRequest(int requestType, String url) {
+        super(requestType, url);
     }
 
     public HttpExtendRequest(HttpTask<T> requestItem) {
-        this(requestItem.requestType, requestItem.reqAction, requestItem.requestUrl,requestItem.listener);
+        this(requestItem.requestType, requestItem.requestUrl);
         this.reqAction = requestItem.reqAction;
         this.requestBody = requestItem.requestBody;
         this.mCallBack = requestItem.listener;
+        this.setmErrorListener(this);
         this.needDeserializer = requestItem.needDeserializer;
         this.deserializer = requestItem.deserializer;
         this.clazz = requestItem.clazz;
@@ -93,7 +88,7 @@ public class HttpExtendRequest<T> extends Request<T>{
      */
     @Override
     public byte[] getBody() throws AuthFailureError {
-        mRequestBody = DataConvert.invertToGsonStr(this.requestBody);
+        mRequestBody = invertToGsonStr(this.requestBody);
         LogUtil.v("Heaven", "convertAfter---" + mRequestBody);
         try {
             return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
@@ -108,7 +103,7 @@ public class HttpExtendRequest<T> extends Request<T>{
      * 处理后台返回的数据,根据相应的数据格式进行相应的反序列化,生成相应的封装对象
      */
     @Override
-    protected Response<T> parseNetworkResponse(NetworkResponse response) { 
+    protected Response<T> parseNetworkResponse(NetworkResponse response) {
         /**
          * 得到返回的数据
          */
@@ -126,7 +121,7 @@ public class HttpExtendRequest<T> extends Request<T>{
 
         return Response.success(result, entry);
     }
-    
+
     /**
      * 取得http请求头,根据情况可以自己修改
      */
@@ -137,28 +132,155 @@ public class HttpExtendRequest<T> extends Request<T>{
         }
         return mHeader;
     }
+
     /**
      * 接受到服务器返回的结果后通过监听向前台分发
      */
     @Override
     protected void deliverResponse(T response) {
-        if (mCallBack != null) {
-            mCallBack.onResponseByID(reqAction, response);
-        }
+        onHttpResponse(reqAction, response);
     }
 
 
     public T getBeanObj(Reader reader, Class<T> clazz) throws JsonSyntaxException {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        T t = gson.fromJson(reader, clazz);
-        return t;
+        return gson.fromJson(reader, clazz);
     }
 
-    public T getBeanObjByDeserializer(Reader reader, Class<T> clazz, JsonDeserializer<T> deserializer) throws JsonSyntaxException{
+    public T getBeanObjByDeserializer(Reader reader, Class<T> clazz, JsonDeserializer<T> deserializer) throws JsonSyntaxException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(clazz, deserializer);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        T t = gson.fromJson(reader, clazz);
-        return t;
+        return gson.fromJson(reader, clazz);
+    }
+
+    /**
+     * convert object to gson
+     * @param obj http request body
+     * @return string
+     */
+    private String invertToGsonStr(Object obj) {
+        String reqStr = "";
+        try {
+            Gson gson = new Gson();
+            reqStr = gson.toJson(obj);
+            LogUtil.v("Heaven", "ReqJson---" + reqStr);
+            reqStr = URLEncoder.encode(reqStr, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return reqStr;
+    }
+
+    /**
+     * package response data
+     * @param requestAction request action
+     * @param response http response
+     */
+    public void onHttpResponse(String requestAction, Object response) {
+        ResponseData resData = new ResponseData();
+        resData.isSuccess = false;
+        resData.action = requestAction;
+        resData.errorType = HttpErrorConst.SERVER_OTHER_FAIL;
+        resData.detail = HttpErrorConst.UNKNOWN_ERROR;
+        if (response != null) {
+            if (response instanceof BaseResDataModel) {
+                BaseResDataModel resDataMode = (BaseResDataModel) response;
+                if (HttpErrorConst.SUCCESS.equals(resDataMode.code)) {
+                    //success
+                    resData.isSuccess = true;
+                    resData.action = requestAction;
+                    resData.resData = resDataMode;
+                } else {
+                    int errorType;
+                    if (HttpErrorConst.SESSION_FAIL1.equals(resDataMode.code) ||
+                        HttpErrorConst.SESSION_FAIL2.equals(resDataMode.code) ||
+                        HttpErrorConst.CHECK_CODE_FAIL_CODE.equals(resDataMode.code)) {
+                        //session expire
+                        errorType = HttpErrorConst.SERVER_SESSION_CODE_FAIL;
+                    } else {
+                        //other error
+                        errorType = HttpErrorConst.SERVER_OTHER_FAIL;
+                    }
+
+                    resData.isSuccess = false;
+                    resData.action = requestAction;
+                    resData.errorType = errorType;
+                    resData.detail = resDataMode.detail;
+                }
+            }
+        }
+        if (mCallBack != null) {
+            mCallBack.onHttpResponse(resData);
+        }
+    }
+
+    /**
+     * classify the error type
+     *
+     * @param error error message
+     */
+    public void handleServerError(String reqAction,Object error) {
+        ResponseData resData = new ResponseData();
+        resData.isSuccess = false;
+        resData.action = reqAction;
+        resData.errorType = HttpErrorConst.SERVER_OTHER_FAIL;
+        resData.detail = HttpErrorConst.UNKNOWN_ERROR;
+        if (error != null) {
+            String errorMessage = "";
+            if (error instanceof ServerError) {
+                errorMessage = handleServerInnerError((VolleyError) error);
+            } else if (error instanceof TimeoutError) {
+                errorMessage = HttpErrorConst.TIMEOUTE_ERROR;
+            } else if (error instanceof NetworkError) {
+                errorMessage = HttpErrorConst.NETWORKE_ERROR;
+            } else if (error instanceof NoConnectionError) {
+                errorMessage = HttpErrorConst.NO_CONNECTION_ERROR;
+            } else if (error instanceof AuthFailureError) {
+                errorMessage = HttpErrorConst.AUTHFAILURE_ERROR;
+            } else if (error instanceof VolleyError) {
+                Throwable exception = ((VolleyError) error).getCause();
+                if (exception != null && exception instanceof JsonSyntaxException) {
+                    errorMessage = HttpErrorConst.PROTOCOL_ANALYZE_ERROR;
+                }
+            }
+            resData.detail = errorMessage;
+        }
+        if (mCallBack != null) {
+            mCallBack.onHttpResponse(resData);
+        }
+    }
+
+    /**
+     * Handles the server error, tries to determine whether to show a stock message or to
+     * show a message retrieved from the server.
+     *
+     * @param error error Object
+     * @return error message
+     */
+    private static String handleServerInnerError(VolleyError error) {
+        NetworkResponse response = error.networkResponse;
+        String serverErrorMessage = HttpErrorConst.SERVER_ERROR;
+        if (response != null) {
+            switch (response.statusCode) {
+                case 404:
+                    serverErrorMessage = HttpErrorConst.RESOURCE_NOT_FIND_ERROR;
+                    break;
+                case 422:
+                    serverErrorMessage = HttpErrorConst.SERVICE_CONN_NUM_OUT_ERROR;
+                    break;
+                case 401:
+                    serverErrorMessage = HttpErrorConst.AUTHORIZATION_ERROR;
+                    break;
+                default:
+                    serverErrorMessage = HttpErrorConst.SERVER_ERROR;
+            }
+        }
+        return serverErrorMessage;
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        handleServerError(reqAction,error);
     }
 }

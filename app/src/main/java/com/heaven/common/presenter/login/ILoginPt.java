@@ -22,12 +22,6 @@ public interface ILoginPt {
          * @param isSuccess identify the status of login
          */
         void resLoginSuccess(boolean isSuccess);
-
-        /**
-         * callback the http error message
-         * @param error error objcet
-         */
-        void resError(Object error);
     }
 
     /**

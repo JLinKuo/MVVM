@@ -35,6 +35,7 @@ public class ResLogin extends BaseResDataModel {
     public String channelType_bss;
     public String wrCard = "";
     public String organName = null;
+    public String MenuColl = null;
     public int ifagent;
 }
  

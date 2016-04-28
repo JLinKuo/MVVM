@@ -19,7 +19,7 @@ import com.heaven.common.datamodel.BaseReqDataModel;
 import com.heaven.common.http.BitmapLruCache;
 import com.heaven.common.http.HttpExtendRequest;
 import com.heaven.common.http.HttpTask;
-import com.heaven.common.http.INetListener;
+import com.heaven.common.http.INetCallBack;
 import com.heaven.common.http.NetConstant;
 import com.heaven.common.http.OkHttpSSLStack;
 import com.heaven.common.util.LogUtil;
@@ -147,7 +147,7 @@ public class HttpManager {
      * @param listener the response listener
      * @param <T> generic
      */
-    public <T> void addRequestQueue(BaseReqDataModel request, Class<T> clazz, INetListener listener) {
+    public <T> void addRequestQueue(BaseReqDataModel request, Class<T> clazz, INetCallBack listener) {
         HttpTask<T> task = OrganizeRequest(request, clazz, listener);
         if (checkRequestOption(task)) {
             HttpExtendRequest<T> commonRequest = new HttpExtendRequest<T>(task);
@@ -166,7 +166,7 @@ public class HttpManager {
      * @param <T> generic
      * @return http task
      */
-    private <T> HttpTask<T> OrganizeRequest(BaseReqDataModel request, Class<T> clazz, INetListener listener) {
+    private <T> HttpTask<T> OrganizeRequest(BaseReqDataModel request, Class<T> clazz, INetCallBack listener) {
         HttpTask<T> task = new HttpTask<T>(request);
         task.requestUrl = NetConstant.WEB_HOST + request.action;
         task.listener = listener;

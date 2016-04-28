@@ -6,39 +6,22 @@ import com.heaven.common.datamodel.login.ReqIdentifyID;
 import com.heaven.common.datamodel.login.ReqLogin;
 import com.heaven.common.datamodel.login.ResIdentifyID;
 import com.heaven.common.datamodel.login.ResLogin;
+import com.heaven.common.http.INetCallBack;
 import com.heaven.common.http.NetConstant;
+import com.heaven.common.http.ResponseData;
 import com.heaven.common.manager.Engine;
-import com.heaven.common.presenter.BasePresenter;
 
 /**
  *作用描述 登陆和验证码请求处理
  *author liuhongtao
  *created at 2016/4/21 10:58
  */
-public class LoginPt extends BasePresenter implements ILoginPt.Presenter{
+public class LoginPt implements ILoginPt.Presenter,INetCallBack{
     private ILoginPt.View mViewCallBack = null;
 
     public LoginPt(ILoginPt.View viewCallBack) {
         this.mViewCallBack = viewCallBack;
         viewCallBack.setPresenter(this);
-    }
-
-    @Override
-    protected void onSuccessResponse(String requestID, BaseResDataModel response) {
-            if (response != null) {
-                if (NetConstant.IDENTIFY_ACTION.equals(requestID)) {
-                    Engine.getDataManager().memoryLoginSession(response.sessionID);
-                    mViewCallBack.resCheckCode(((ResIdentifyID)response).checkCode);
-                } else if(NetConstant.LOGIN_ACTION.equals(requestID)) {
-                    Engine.getDataManager().memoryLoginRes((ResLogin)response);
-                    mViewCallBack.resLoginSuccess(true);
-                }
-            }
-    }
-
-    @Override
-    protected void onHttpError(Object error) {
-        mViewCallBack.resError(error);
     }
 
     @Override
@@ -62,5 +45,22 @@ public class LoginPt extends BasePresenter implements ILoginPt.Presenter{
         login.checkCode = checkCode;
         Engine.getDataManager().memoryLoginData(userName, password);
         Engine.getHttpManager().addRequestQueue(login, ResLogin.class,this);
+    }
+
+    @Override
+    public void onHttpResponse(ResponseData data) {
+        if (data != null) {
+            if (data.isSuccess) {
+                if (NetConstant.IDENTIFY_ACTION.equals(data.action)) {
+                    Engine.getDataManager().memoryLoginSession(data.resData.sessionID);
+                    mViewCallBack.resCheckCode(((ResIdentifyID)data.resData).checkCode);
+                } else if(NetConstant.LOGIN_ACTION.equals(data.action)) {
+                    Engine.getDataManager().memoryLoginRes((ResLogin)data.resData);
+                    mViewCallBack.resLoginSuccess(true);
+                }
+            } else {
+
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 /**
  * Project Name:Volley
- * File Name:OkHttpStack.java
+ * File Name:OkHttpSSLStack.java
  * Package Name:com.android.volley.toolbox
  * Date:2016年4月7日下午2:33:34
  * Copyright (c) 2016
@@ -23,13 +23,13 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
- * ClassName:OkHttpStack <br/>
+ * ClassName:OkHttpSSLStack <br/>
  * Function: TODO ADD FUNCTION. <br/>
  * Reason: TODO ADD REASON. <br/>
  * Date: 2016年4月7日 下午2:33:34 <br/>
  *
  * @author neusoft liu.hongtao
- * @version
+ * @version 1.0
  * @since JDK 1.6
  */
 public class OkHttpSSLStack extends HurlStack {
