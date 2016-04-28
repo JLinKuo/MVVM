@@ -3,6 +3,7 @@ package com.heaven.common.manager;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -129,12 +130,14 @@ public class HttpManager {
 
     // 把请求加入到请求队列中
     public <T> void addRequestQueue(BaseReqDataModel request, Class<T> clazz, INetListener listener) {
-        HttpTask<T> task = OrganizeRequest(request,clazz,listener);
-        HttpExtendRequest<T> commonRequest = new HttpExtendRequest<T>(task);
-        if (request != null) {
-            commonRequest.setTag(request.action);
+        HttpTask<T> task = OrganizeRequest(request, clazz, listener);
+        if (checkRequestOption(task)) {
+            HttpExtendRequest<T> commonRequest = new HttpExtendRequest<T>(task);
+            if (request != null) {
+                commonRequest.setTag(request.action);
+            }
+            mRequestQueue.add(commonRequest);
         }
-        mRequestQueue.add(commonRequest);
     }
 
     // 组装请求信息
@@ -144,6 +147,15 @@ public class HttpManager {
         task.listener = listener;
         task.clazz = clazz;
         return task;
+    }
+
+    private <T> boolean checkRequestOption(HttpTask<T> task) {
+        boolean isOk = true;
+        if (TextUtils.isEmpty(task.requestUrl) || TextUtils.isEmpty(task.reqAction)) {
+            isOk = false;
+            LogUtil.w(TAG, "please make sure url and action are not null");
+        }
+        return isOk;
     }
 
     public void addRequest(Request request, Object tag) {
