@@ -112,6 +112,18 @@ public class HttpManager {
         return requestQueue;
     }
 
+    /**
+     * Creat ssl key-value
+     * @param context context
+     * @param res secure file path
+     * @param password password
+     * @return SSLSocketFactory
+     * @throws CertificateException
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     * @throws KeyStoreException
+     * @throws KeyManagementException
+     */
     private SSLSocketFactory createSSLSocketFactory(Context context, int res, String password)
             throws CertificateException,
             NoSuchAlgorithmException,
@@ -146,7 +158,14 @@ public class HttpManager {
         }
     }
 
-    // 组装请求信息
+    /**
+     * Organize the http request info
+     * @param request http request param
+     * @param clazz the response generic
+     * @param listener the response listener
+     * @param <T> generic
+     * @return http task
+     */
     private <T> HttpTask<T> OrganizeRequest(BaseReqDataModel request, Class<T> clazz, INetListener listener) {
         HttpTask<T> task = new HttpTask<T>(request);
         task.requestUrl = NetConstant.WEB_HOST + request.action;
