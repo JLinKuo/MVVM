@@ -128,7 +128,13 @@ public class HttpManager {
         return sslContext.getSocketFactory();
     }
 
-    // 把请求加入到请求队列中
+    /**
+     * put the request task to request queue
+     * @param request http request param
+     * @param clazz the response generic
+     * @param listener the response listener
+     * @param <T> generic
+     */
     public <T> void addRequestQueue(BaseReqDataModel request, Class<T> clazz, INetListener listener) {
         HttpTask<T> task = OrganizeRequest(request, clazz, listener);
         if (checkRequestOption(task)) {
@@ -149,6 +155,12 @@ public class HttpManager {
         return task;
     }
 
+    /**
+     * check http request option
+     * @param task http task
+     * @param <T> generic type
+     * @return check result
+     */
     private <T> boolean checkRequestOption(HttpTask<T> task) {
         boolean isOk = true;
         if (TextUtils.isEmpty(task.requestUrl) || TextUtils.isEmpty(task.reqAction)) {
