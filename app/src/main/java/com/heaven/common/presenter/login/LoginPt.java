@@ -63,9 +63,9 @@ public class LoginPt implements ILoginPt.Presenter,INetCallBack{
                 }
             } else {
                 if (data.errorType == HttpErrorConst.SERVER_OTHER_FAIL) {
-                    mViewCallBack.resLoginSuccess(false);
                     MainApp.ShowToast(data.detail);
                 }
+                mViewCallBack.resLoginSuccess(false);
 
             }
         }
