@@ -10,6 +10,7 @@ package com.heaven.common;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -101,5 +102,11 @@ public class MainApp extends Application {
 
     public static void ShowToast(String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void sendGlobalBroadCast(Intent intent) {
+        if (context != null) {
+            context.sendBroadcast(intent);
+        }
     }
 }
