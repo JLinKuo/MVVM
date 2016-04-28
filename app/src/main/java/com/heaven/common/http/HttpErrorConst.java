@@ -7,6 +7,9 @@ public class HttpErrorConst {
     public static final int SERVER_SESSION_CODE_FAIL = 1;
     public static final int SERVER_OTHER_FAIL = 2;
 
+    public static final String SESSION_FAIL_FILTER = "session_fail";
+    public static final String CHECK_CODE_FAIL_FILTER = "check_code_fail";
+
     public static final String SUCCESS = "0000";
     public static final String SESSION_FAIL1 = "1015";
     public static final String SESSION_FAIL2 = "1016";

@@ -1,6 +1,8 @@
 
 package com.heaven.common.http;
 
+import android.content.Intent;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,8 +29,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSyntaxException;
+import com.heaven.common.MainApp;
 import com.heaven.common.datamodel.BaseReqDataModel;
 import com.heaven.common.datamodel.BaseResDataModel;
+import com.heaven.common.ui.activity.MainActivity;
 import com.heaven.common.util.LogUtil;
 import com.heaven.common.util.Util;
 
@@ -194,9 +198,16 @@ public class HttpExtendRequest<T> extends Request<T> implements Response.ErrorLi
                 } else {
                     int errorType;
                     if (HttpErrorConst.SESSION_FAIL1.equals(resDataMode.code) ||
-                        HttpErrorConst.SESSION_FAIL2.equals(resDataMode.code) ||
-                        HttpErrorConst.CHECK_CODE_FAIL_CODE.equals(resDataMode.code)) {
+                        HttpErrorConst.SESSION_FAIL2.equals(resDataMode.code) ) {
+                        Intent intent = new Intent();
+                        intent.setAction(HttpErrorConst.SESSION_FAIL_FILTER);
+                        MainApp.sendGlobalBroadCast(intent);
                         //session expire
+                        errorType = HttpErrorConst.SERVER_SESSION_CODE_FAIL;
+                    } else if(HttpErrorConst.CHECK_CODE_FAIL_CODE.equals(resDataMode.code)) {
+                        Intent intent = new Intent();
+                        intent.setAction(HttpErrorConst.CHECK_CODE_FAIL_FILTER);
+                        MainApp.sendGlobalBroadCast(intent);
                         errorType = HttpErrorConst.SERVER_SESSION_CODE_FAIL;
                     } else {
                         //other error
