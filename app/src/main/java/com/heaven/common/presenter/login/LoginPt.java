@@ -1,15 +1,18 @@
 package com.heaven.common.presenter.login;
 
+import com.heaven.common.MainApp;
 import com.heaven.common.config.UserInfo;
 import com.heaven.common.datamodel.BaseResDataModel;
 import com.heaven.common.datamodel.login.ReqIdentifyID;
 import com.heaven.common.datamodel.login.ReqLogin;
 import com.heaven.common.datamodel.login.ResIdentifyID;
 import com.heaven.common.datamodel.login.ResLogin;
+import com.heaven.common.http.HttpErrorConst;
 import com.heaven.common.http.INetCallBack;
 import com.heaven.common.http.NetConstant;
 import com.heaven.common.http.ResponseData;
 import com.heaven.common.manager.Engine;
+import com.heaven.common.ui.note.NotePopWindow;
 
 /**
  *作用描述 登陆和验证码请求处理
@@ -59,6 +62,10 @@ public class LoginPt implements ILoginPt.Presenter,INetCallBack{
                     mViewCallBack.resLoginSuccess(true);
                 }
             } else {
+                if (data.errorType == HttpErrorConst.SERVER_OTHER_FAIL) {
+                    mViewCallBack.resLoginSuccess(false);
+                    MainApp.ShowToast(data.detail);
+                }
 
             }
         }
