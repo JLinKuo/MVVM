@@ -20,6 +20,7 @@ import com.heaven.common.http.BitmapLruCache;
 import com.heaven.common.http.HttpExtendRequest;
 import com.heaven.common.http.HttpTask;
 import com.heaven.common.http.INetCallBack;
+import com.heaven.common.http.NetConstant;
 import com.heaven.common.http.OkHttpSSLStack;
 import com.heaven.common.util.LogUtil;
 
