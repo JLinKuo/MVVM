@@ -18,7 +18,6 @@ import com.android.volley.Cache.Entry;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
@@ -33,7 +32,6 @@ import com.google.gson.JsonSyntaxException;
 import com.heaven.common.MainApp;
 import com.heaven.common.datamodel.BaseReqDataModel;
 import com.heaven.common.datamodel.BaseResDataModel;
-import com.heaven.common.ui.activity.MainActivity;
 import com.heaven.common.util.LogUtil;
 import com.heaven.common.util.Util;
 

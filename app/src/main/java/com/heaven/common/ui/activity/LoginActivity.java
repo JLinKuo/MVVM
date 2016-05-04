@@ -15,7 +15,7 @@ import base.core.heaven.baseui.BaseActivity;
 import base.core.heaven.manager.SwitchManager;
 import base.core.heaven.param.PageParam;
 
-public class MainActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +41,9 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(HttpErrorConst.SESSION_FAIL_FILTER)){
-                NotePopWindow.getInstance(MainActivity.this).showPopupWindow(HttpErrorConst.SESSION_FAIL);
+                NotePopWindow.getInstance(LoginActivity.this).showPopupWindow(HttpErrorConst.SESSION_FAIL);
             } else if (intent.getAction().equals(HttpErrorConst.CHECK_CODE_FAIL_FILTER)){
-                NotePopWindow.getInstance(MainActivity.this).showPopupWindow(HttpErrorConst.CHECK_CODE_FAIL);
+                NotePopWindow.getInstance(LoginActivity.this).showPopupWindow(HttpErrorConst.CHECK_CODE_FAIL);
             }
         }
 
