@@ -1,6 +1,7 @@
 package com.heaven.common.http;
 
-import com.heaven.common.datamodel.BaseResDataModel;
+
+import com.data.model.BaseResDataModel;
 
 /**
  * Created by neusoft on 2016/4/28.

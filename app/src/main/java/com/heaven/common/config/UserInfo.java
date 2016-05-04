@@ -1,6 +1,7 @@
 package com.heaven.common.config;
 
-import com.heaven.common.datamodel.login.ResLogin;
+
+import com.data.model.login.ResLogin;
 
 /**
  * Created by neusoft on 2016/4/20.

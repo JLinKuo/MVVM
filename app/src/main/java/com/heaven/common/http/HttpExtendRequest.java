@@ -25,13 +25,13 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.data.model.BaseReqDataModel;
+import com.data.model.BaseResDataModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSyntaxException;
 import com.heaven.common.MainApp;
-import com.heaven.common.datamodel.BaseReqDataModel;
-import com.heaven.common.datamodel.BaseResDataModel;
 import com.heaven.common.util.LogUtil;
 import com.heaven.common.util.Util;
 

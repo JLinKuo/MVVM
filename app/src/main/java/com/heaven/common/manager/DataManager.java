@@ -1,7 +1,7 @@
 package com.heaven.common.manager;
 
+import com.data.model.login.ResLogin;
 import com.heaven.common.config.UserInfo;
-import com.heaven.common.datamodel.login.ResLogin;
 
 /**
  * Created by neusoft on 2016/4/20.

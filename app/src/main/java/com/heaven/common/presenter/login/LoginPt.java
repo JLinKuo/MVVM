@@ -1,11 +1,11 @@
 package com.heaven.common.presenter.login;
 
+import com.data.model.login.ReqIdentifyID;
+import com.data.model.login.ReqLogin;
+import com.data.model.login.ResIdentifyID;
+import com.data.model.login.ResLogin;
 import com.heaven.common.MainApp;
 import com.heaven.common.config.UserInfo;
-import com.heaven.common.datamodel.login.ReqIdentifyID;
-import com.heaven.common.datamodel.login.ReqLogin;
-import com.heaven.common.datamodel.login.ResIdentifyID;
-import com.heaven.common.datamodel.login.ResLogin;
 import com.heaven.common.http.HttpErrorConst;
 import com.heaven.common.http.INetCallBack;
 import com.heaven.common.http.NetConstant;
